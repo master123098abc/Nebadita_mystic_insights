@@ -1,7 +1,7 @@
 import { useState, FormEvent, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Menu, X, MessageCircle, Maximize, Sparkles, Moon, Star, Video, ShoppingBag, Smartphone, Hand, Home, ChevronDown, ChevronUp, Users, Award, Quote, ChevronRight, CheckCircle, Calendar, Youtube, PlayCircle, ArrowLeft, HelpCircle } from 'lucide-react';
-import { tarotDeck, getRandomCard, TarotCard, products, Product, ProductTier, testimonials, Testimonial, readingSpreads, ReadingSpread, ReadingCategory } from './data';
+import { tarotDeck, getRandomCard, TarotCard, products, Product, ProductTier, testimonials, Testimonial, readingSpreads, ReadingSpread, ReadingCategory, subscriptionPlans, SubscriptionPlan } from './data';
 import { AskQuestionView } from './components/AskQuestionView';
 
 // --- Shared Components ---
@@ -290,8 +290,9 @@ const HomeView = ({ setView }: { setView: (v: string) => void }) => {
             { id: 'daily', icon: Sparkles, title: 'Daily Card', desc: 'Draw a single card for daily guidance and energy.', w: 'w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]' },
             { id: 'ask', icon: HelpCircle, title: 'Ask a Question', desc: 'Focus on your inquiry and pick your cards.', w: 'w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]' },
             { id: 'yesno', icon: CheckCircle, title: 'Yes/No Oracle', desc: 'Get quick clarity on a pressing question.', w: 'w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]' },
-            { id: 'booking', icon: Calendar, title: 'Book Reading', desc: 'Deep-dive personalized session with Nibedita.', w: 'w-full md:w-[calc(50%-12px)] lg:w-[calc(40%-16px)]' },
-            { id: 'shop', icon: ShoppingBag, title: 'Mystical Shop', desc: 'Numerology & specialized premium reports.', w: 'w-full md:w-full lg:w-[calc(40%-16px)]' }
+            { id: 'booking', icon: Calendar, title: 'Book Reading', desc: 'Deep-dive personalized session with Nibedita.', w: 'w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]' },
+            { id: 'subscriptions', icon: Star, title: 'Subscriptions', desc: 'Monthly Tarot guidance and exclusive plans.', w: 'w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]' },
+            { id: 'shop', icon: ShoppingBag, title: 'Mystical Shop', desc: 'Numerology & specialized premium reports.', w: 'w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]' }
           ].map((svc, i) => (
             <FadeIn key={svc.id} delay={i * 0.1} className={svc.w}>
               <div onClick={() => {
@@ -954,6 +955,82 @@ const ShopView = () => {
   );
 };
 
+
+// --- Subscriptions View ---
+
+const SubscriptionsView = () => {
+  const handleSubscribe = (plan: SubscriptionPlan) => {
+    const text = `Hi Nibedita, I'd like to subscribe to: ${plan.name} — ₹${plan.price}/month`;
+    const encoded = encodeURIComponent(text);
+    window.open(`https://wa.me/919736973155?text=${encoded}`, '_blank');
+  };
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center px-4 py-8 md:py-16 max-w-7xl mx-auto w-full">
+      <div className="text-center space-y-4 mb-12 md:mb-16 max-w-2xl mx-auto">
+        <div className="inline-flex items-center justify-center p-3 bg-purple-900/30 rounded-full mb-2 ring-1 ring-purple-500/50">
+          <Star className="text-amber-400 w-6 h-6" />
+        </div>
+        <h2 className="font-serif text-3xl md:text-5xl text-amber-400">🔮 Monthly Tarot Subscription Plans</h2>
+        <p className="text-purple-200/70 text-lg">Choose Your Plan & Begin Your Journey</p>
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 lg:gap-8 w-full items-start">
+        {subscriptionPlans.map((plan, i) => (
+          <motion.div
+            key={plan.id}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ delay: i * 0.1, duration: 0.5 }}
+            whileHover={{ scale: 1.03 }}
+            className={`relative flex flex-col h-full rounded-3xl p-6 md:p-8 backdrop-blur-md transition-all shadow-xl ${
+              plan.popular 
+                ? 'bg-gradient-to-b from-amber-500/10 to-purple-900/40 border border-amber-500/50 xl:scale-105 xl:-translate-y-2 z-10 shadow-[0_0_30px_rgba(251,191,36,0.15)]' 
+                : 'bg-purple-950/30 border border-purple-500/30 hover:border-purple-400/50'
+            }`}
+          >
+            {plan.popular && (
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-600 to-amber-400 text-black text-xs font-bold uppercase tracking-wider py-1 px-4 rounded-full shadow-[0_0_15px_rgba(251,191,36,0.4)] whitespace-nowrap">
+                Most Popular
+              </div>
+            )}
+            
+            <div className="text-center mb-6">
+              <div className="text-4xl mb-4">{plan.icon}</div>
+              <h3 className={`text-xl font-serif mb-2 ${plan.popular ? 'text-amber-400' : 'text-amber-100'}`}>{plan.name}</h3>
+              <div className="flex items-baseline justify-center gap-1">
+                <span className={`text-3xl font-bold ${plan.popular ? 'text-amber-500' : 'text-white'}`}>₹{plan.price}</span>
+                <span className="text-purple-200/50 text-sm">/month</span>
+              </div>
+            </div>
+
+            <div className="flex-1 w-full flex flex-col gap-4 mb-8">
+              {plan.features.map((feature, idx) => (
+                <div key={idx} className="flex items-start gap-3">
+                  <CheckCircle className={`w-5 h-5 shrink-0 mt-0.5 ${plan.popular ? 'text-amber-400' : 'text-purple-400'}`} />
+                  <span className="text-sm text-purple-100/80 leading-snug">{feature}</span>
+                </div>
+              ))}
+            </div>
+
+            <button
+              onClick={() => handleSubscribe(plan)}
+              className={`w-full py-3 px-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all mt-auto ${
+                plan.popular 
+                  ? 'bg-gradient-to-r from-amber-500 to-amber-400 text-black shadow-[0_0_15px_rgba(251,191,36,0.3)] hover:shadow-[0_0_25px_rgba(251,191,36,0.5)] hover:-translate-y-0.5' 
+                  : 'bg-purple-800/50 text-amber-50 border border-purple-500/30 hover:bg-purple-700/60 hover:border-purple-400/50'
+              }`}
+            >
+              Subscribe Now
+            </button>
+          </motion.div>
+        ))}
+      </div>
+    </motion.div>
+  );
+};
+
 // --- Main App Layout ---
 
 export default function App() {
@@ -966,6 +1043,7 @@ export default function App() {
     { id: 'ask', label: 'Ask a Question' },
     { id: 'yesno', label: 'Yes/No Reading' },
     { id: 'booking', label: 'Book Appointment' },
+    { id: 'subscriptions', label: 'Subscriptions' },
     { id: 'shop', label: 'Shop' },
     { id: 'about', label: 'About' }
   ];
@@ -1104,6 +1182,7 @@ export default function App() {
         {view === 'ask' && <AskQuestionView />}
         {view === 'yesno' && <YesNoView />}
         {view === 'booking' && <BookingView />}
+        {view === 'subscriptions' && <SubscriptionsView />}
         {view === 'shop' && <ShopView />}
         {view === 'about' && <AboutView />}
       </main>

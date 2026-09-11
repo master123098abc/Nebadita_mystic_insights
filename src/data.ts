@@ -297,3 +297,80 @@ export const readingSpreads: ReadingSpread[] = [
   { id: "spl2", name: "Jar Spells", description: "Custom spell jars for protection, love, or prosperity.", price: 1555, category: "Spells & Spiritual Guidance" },
   { id: "spl3", name: "Spiritual Guidance", description: "One-on-one session for deep spiritual counseling.", price: 2111, category: "Spells & Spiritual Guidance" },
 ];
+
+export type SubscriptionPlan = {
+  id: string;
+  name: string;
+  icon: string;
+  price: number;
+  popular?: boolean;
+  features: string[];
+};
+
+export const subscriptionPlans: SubscriptionPlan[] = [
+  {
+    id: "sub1",
+    name: "Mystic Starter",
+    icon: "🌟",
+    price: 111,
+    features: [
+      "Daily Guidance",
+      "1 Question per Month (Career / Love)",
+      "Simple Tarot Guidance for Your Journey"
+    ]
+  },
+  {
+    id: "sub2",
+    name: "Mystic Basic",
+    icon: "🌙",
+    price: 299,
+    features: [
+      "2 Yes/No Questions",
+      "1 Monthly Energy Reading",
+      "1 Guidance Message",
+      "Members-only Offers"
+    ]
+  },
+  {
+    id: "sub3",
+    name: "Mystic Silver",
+    icon: "✨",
+    price: 599,
+    features: [
+      "4 Tarot Questions",
+      "1 Monthly Deep Reading",
+      "Career / Relationship Guidance",
+      "1 Monthly Energy Update",
+      "Special Member Pricing"
+    ]
+  },
+  {
+    id: "sub4",
+    name: "Mystic Premium",
+    icon: "👑",
+    price: 999,
+    popular: true,
+    features: [
+      "8 Tarot Questions",
+      "1 Deep Tarot Reading",
+      "Career + Relationship Guidance",
+      "1 Numerology Insight",
+      "Priority Reading",
+      "Exclusive Remedies & Guidance"
+    ]
+  },
+  {
+    id: "sub5",
+    name: "Mystic VIP",
+    icon: "💎",
+    price: 1499,
+    features: [
+      "12 Tarot Questions",
+      "Monthly Comprehensive Reading",
+      "Tarot + Numerology Guidance",
+      "Priority Support",
+      "Personalized Spiritual Guidance",
+      "Exclusive Member Offers"
+    ]
+  }
+];
